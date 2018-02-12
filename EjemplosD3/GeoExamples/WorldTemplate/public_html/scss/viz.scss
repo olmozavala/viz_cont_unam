@@ -1,0 +1,27 @@
+/* 
+    Created on : Feb 28, 2015, 9:33:11 PM
+    Author     : olmozavala
+*/
+@import "base";
+
+.land{
+	fill:green;
+	stroke: black;
+	stroke-width: 1;
+	/*stroke-linecap: butt,round,square*/
+	/*stroke-dasharray: 10,10 (draw,blanck);*/
+	opacity: .8;
+}
+
+.blue{
+	@extend .land;
+	fill: blue;
+}
+
+.grid{
+	fill: transparent;
+	stroke: #B9B9B9; 
+	stroke-width: .3;
+	stroke-dasharray: "5,5";
+	opacity: 1;
+}

@@ -1,0 +1,82 @@
+{
+ "name": "Medical Imaging",
+ "children": [
+  {
+   "name": "Software",
+   "children": [
+    {
+     "name": "Visualization",
+     "children": [
+      {"name": "ITK", 
+		"link": "http://www.itk.org/",
+	  "props": {
+		  "Summary": "Segmentation and registration algorithms",
+		  "Doc": "http://www.itk.org/ItkSoftwareGuide.pdf",
+		  "Language": "C++, Python, Java, C#, R, Tcl and Ruby",
+		  "OS":"All"}
+	  },
+      {"name": "VTK", "link": 3812}
+     ]
+    },
+    {
+     "name": "Classification",
+     "children": [
+      {"name": "ClassSoft", "link": 3534}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Data Bases",
+   "children": [
+    {
+     "name": "",
+     "children": [
+      {"name": "ITK" },
+      {"name": "VTK", "link": 3812}
+     ]
+    },
+    {
+     "name": "Classification",
+     "children": [
+      {"name": "ClassSoft", "link": 3534}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Computer Vision",
+   "children": [
+    {
+     "name": "Image Processing",
+     "children": [
+      {"name": "Filters", "link": 3938}
+     ]
+    },
+    {
+     "name": "Segmentation",
+     "children": [
+      {"name": "ClassSoft", "link": 3534}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Data mining",
+   "children": [
+    {
+     "name": "Supervised",
+     "children": [
+      {"name": "Filters", "link": 3938}
+     ]
+    },
+    {
+     "name": "SemiSupervised",
+     "children": [
+      {"name": "ClassSoft", "link": 3534}
+     ]
+    }
+   ]
+  }
+  ]
+}

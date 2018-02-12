@@ -1,0 +1,55 @@
+/* 
+    Created on : Feb 28, 2015, 9:33:11 PM
+    Author     : olmozavala
+*/
+@import "base";
+
+$back_color: #DEDEDE;
+$stroke-w: 1.5px;
+
+.mytree{
+	background-color: $background_color; 
+}
+
+.node circle {
+	cursor: pointer;
+	fill: $f-color;
+	stroke: steelblue;
+	stroke-width: $stroke-w;
+}
+
+.node text {
+	font-size: $f-size;
+	fill: white;
+}
+
+path.link {
+	fill: none;
+	stroke: #ccc;
+	stroke-width: $stroke-w;
+}
+
+.tooltip{
+	background-color: white;
+	position: absolute;
+	padding: 10px;
+	border: solid;
+	border-width: 1px;
+	color: $f-shadow-color;
+	top: 0px;
+	display: none;
+	@include user-select(none);
+	@include border-radius();
+}
+
+@mixin user-select($value)
+{
+    & {
+        -webkit-touch-callout: $value;
+        -webkit-user-select: $value;
+        -khtml-user-select: $value;
+        -moz-user-select: $value;
+        -ms-user-select: $value;
+        user-select: $value;
+    }
+}

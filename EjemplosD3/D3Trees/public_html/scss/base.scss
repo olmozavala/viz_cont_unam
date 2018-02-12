@@ -1,0 +1,57 @@
+/* 
+    Created on : Jan 15, 2015, 4:51:56 PM
+    Author     : olmozavala
+*/
+@import "compass/css3";
+
+$background_color: #495565;
+$f-color: white;
+$f-shadow-color: darken($background_color,10);
+$f-size: 14px;
+$def-border: 15px;
+$def-padding: 5px 10px;
+$warning-color: #d9534f;
+
+html,body{
+	margin: 0px;
+	border: 0px;
+	background-color: $background_color;
+}
+
+@mixin textHalo($haloColor){
+	$haloSize: 1px;
+	$haloDisp: 2px;//Halo displacement
+	@include text-shadow(   $haloColor 0 $haloDisp $haloSize, 
+                            $haloColor $haloDisp 0 $haloSize,
+                            $haloColor $haloDisp*-1 0 $haloSize,
+                            $haloColor 0 $haloDisp*-1  $haloSize,
+                            $haloColor $haloDisp $haloDisp $haloSize,
+                            $haloColor $haloDisp*-1 $haloDisp $haloSize,
+                            $haloColor $haloDisp $haloDisp*-1 $haloSize,
+                            $haloColor $haloDisp*-1  $haloDisp*-1 $haloSize);
+}
+
+.defText{
+	position: absolute;
+	color: $f-color;
+}
+
+h2{
+	text-align: center;
+}
+
+#errorText{
+	@extend .defText;
+	@include border-radius($def-border);
+	background-color: $warning-color;
+	padding: $def-padding;
+	display: none;
+	top: 90%;
+	left: 10%;
+}
+
+#maingraph{
+	background-color: $background_color;
+}
+
+

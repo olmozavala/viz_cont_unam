@@ -1,0 +1,87 @@
+/* 
+    Created on : Feb 28, 2015, 9:33:11 PM
+    Author     : olmozavala
+*/
+/* 
+    Created on : Jan 15, 2015, 4:51:56 PM
+    Author     : olmozavala
+*/
+/* line 15, ../scss/base.scss */
+html, body {
+  margin: 0px;
+  border: 0px;
+  background-color: #495565;
+}
+
+/* line 34, ../scss/base.scss */
+.defText, #errorText {
+  position: absolute;
+  color: white;
+}
+
+/* line 39, ../scss/base.scss */
+h2 {
+  text-align: center;
+}
+
+/* line 43, ../scss/base.scss */
+#errorText {
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  background-color: #d9534f;
+  padding: 5px 10px;
+  display: none;
+  top: 90%;
+  left: 10%;
+}
+
+/* line 53, ../scss/base.scss */
+#maingraph {
+  background-color: #495565;
+}
+
+/* line 10, ../scss/viz.scss */
+.mytree {
+  background-color: #495565;
+}
+
+/* line 14, ../scss/viz.scss */
+.node circle {
+  cursor: pointer;
+  fill: white;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+/* line 21, ../scss/viz.scss */
+.node text {
+  font-size: 14px;
+  fill: white;
+}
+
+/* line 26, ../scss/viz.scss */
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+/* line 32, ../scss/viz.scss */
+.tooltip {
+  background-color: white;
+  position: absolute;
+  padding: 10px;
+  border: solid;
+  border-width: 1px;
+  color: #343c47;
+  top: 0px;
+  display: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}

@@ -1,0 +1,38 @@
+/* 
+    Created on : Jan 15, 2015, 4:51:56 PM
+    Author     : olmozavala
+*/
+/* line 15, ../scss/base.scss */
+html, body {
+  margin: 0px;
+  border: 0px;
+  background-color: #495565;
+}
+
+/* line 34, ../scss/base.scss */
+.defText, #errorText {
+  position: absolute;
+  color: white;
+}
+
+/* line 39, ../scss/base.scss */
+h2 {
+  text-align: center;
+}
+
+/* line 43, ../scss/base.scss */
+#errorText {
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  background-color: #d9534f;
+  padding: 5px 10px;
+  display: none;
+  top: 90%;
+  left: 10%;
+}
+
+/* line 53, ../scss/base.scss */
+#maingraph {
+  background-color: #495565;
+}
