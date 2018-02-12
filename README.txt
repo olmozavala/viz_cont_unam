@@ -1,3 +1,13 @@
+Install Examples Netbeans
+--------------------------
+
+    New Project --> HTML5/JavaScript --> HTML5/JS With Existing Sources  --> Select Folder
+
+Then  just set **source folder** to public_html and then define it to start with *index.html*.    
+
+
+Files data
+-------------
 time, lon, lat, co  (por minuto)
 time, lon, lat, pm25(por segundo)
 
