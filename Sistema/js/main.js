@@ -38,6 +38,10 @@
       .attr("width", width)
       .attr("height", height);
 
+  d3.json('Datos/MapsGeoJson/Deportivas.json', function(data) {
+	  var x = 1;
+  });
+
   d3.json('geo-data.json', function(data) {
     var states = topojson.feature(data, data.objects.MEX_adm1);
 
