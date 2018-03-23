@@ -19,3 +19,104 @@ svg {
 body{
 	background-color: black;
 }
+
+#graph-main {
+    width: 600px;
+    height: 100vh;
+    margin: auto;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 50px 50px 0 50px;
+    background-color: rgba(255, 255, 255, 1);
+    
+}
+
+#graph-main svg {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+#stat-graph {
+    display: block;
+    width: 600px;
+    height: auto;
+}
+
+#nav {
+    width: 200px;
+    margin: 0 auto;
+}
+        
+#nav i {
+    font-size: 30px;
+}
+
+#nav i:hover {
+    cursor: pointer;
+}
+
+#nav i:first-child{
+    float: left;
+    margin-left: 20px;
+}
+
+#nav i:last-child{
+    float: right;
+    margin-right: 20px;
+}
+
+#jorney {
+    width: 100%;
+    margin: 20px auto;
+}
+
+#jorney ul, #jorney ul {
+    width: 100%;
+    list-style: none outside none;
+    list-style-type: none;
+    padding: 0;
+    margin: auto;
+}
+
+#jorney li {
+    display: inline-block;
+    width: 195px;
+}
+
+#jorney li:hover {
+    cursor: pointer;
+}
+
+#jorney li img {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    display: block
+}
+        
+#jorney li span {
+    display: block;
+    margin: 10px auto;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #D53402;
+    text-transform: uppercase;
+}
+
+.clear {
+    clear: both;
+}
+
+.selected {
+    box-shadow: 2px 2px 8px #888888;
+}
+
+.disable {
+    opacity: 0.3;
+}
+
+.blur {
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+}

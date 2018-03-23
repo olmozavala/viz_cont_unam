@@ -1,0 +1,72 @@
+.gray-line {
+    stroke: #5A5A5A;
+    fill: none;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+.red-line {
+    stroke: #D53402;
+    fill: none;
+    stroke-width: 2px;
+}
+
+.focus-text {
+}
+
+.focus-second-text {
+}
+
+.mouse-line{
+}
+
+.xaxis path {
+    stroke: gray;
+}
+
+.xaxis text {
+    fill: gray;
+    font-size: 13px;
+}
+
+.yaxis text, .label-graph {
+    fill: #D53402;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.xgrid {
+    stroke: #272727;
+    fill: none;
+    stroke-width: 1px;
+    opacity: 0.3;
+}
+
+.ygrid {
+    stroke: #272727;
+    fill: none;
+    stroke-width: 1px;
+    opacity: 0.3;
+}
+
+.y-second-graph, .label-second-graph {
+    fill: gray;
+    opacity: 0.8;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.point-graph {
+    fill: red;
+    opacity: 0.5;
+}
+
+.point-second-graph {
+    fill: black;
+    opacity: 0.5;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}

@@ -96,7 +96,6 @@ function mouseoverDep(){
 	console.log("mouseoverDep");
 }
 
-
 $(window).resize(function(){
 	var width = window.innerWidth - 2*margin;
 	var height= window.innerHeight - 2*margin;
