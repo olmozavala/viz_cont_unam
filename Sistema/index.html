@@ -14,34 +14,36 @@
 <body>
 
   <div id="map"></div>
-  <div id="tooltip">
-    <div id="graph-main">
-      <div id="graph-stats"></div>
-      <svg id="graph"></svg>
-      <div id="graph-controls">
+  <div id="tooltip"></div>
+  <div id="options"> 
+    <button type="button" class="btn" id="bici1">Bici 1</button> 
+    <button type="button" class="btn" id="bici2">Bici 2</button> 
+  </div>
+  <div id="graph-main">
+    <div id="graph-stats"></div>
+    <svg id="graph"></svg>
+    <div id="graph-controls">
       <div id="nav">
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-right"></i>
       </div>
       <div class="clear"></div>
       <div id="jorney">
-      <ul>
-        <li>
-          <img src="img/walk.png" alt="caminando">
-          <span>caminando</span>
-        </li>
-        <li>
-          <img src="img/cycling.png" alt="bicicleta">
-          <span>bicicleta</span>
-        </li>
-        <li>
-          <img src="img/bus.png" alt="pumabus">
-          <span>pumabus</span>
-        </li>
-      </ul>
+        <ul>
+          <li>
+            <img src="img/walk.png" alt="caminando">
+            <span>caminando</span>
+          </li>
+          <li>
+            <img src="img/cycling.png" alt="bicicleta">
+            <span>bicicleta</span>
+          </li>
+          <li>
+            <img src="img/bus.png" alt="pumabus">
+            <span>pumabus</span>
+          </li>
+        </ul>
     </div>
   </div>
-  </div></div>
-
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
   <script src="js/main.js"></script>

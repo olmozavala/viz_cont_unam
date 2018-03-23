@@ -1,5 +1,6 @@
 .boundary {
-	fill: #202020;
+	/*fill: #202020;*/
+	fill: green;
 	stroke: #E33723;
 	stroke-linejoin: round;
 	stroke-width: .3px;
@@ -18,6 +19,12 @@ svg {
 
 body{
 	background-color: black;
+}
+
+#options{
+    position: absolute;
+    bottom:20%;
+    left: 60%;
 }
 
 #graph-main {
@@ -119,4 +126,3 @@ body{
 .blur {
     -webkit-filter: blur(5px);
     filter: blur(5px);
-}

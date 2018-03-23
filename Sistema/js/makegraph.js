@@ -36,7 +36,7 @@ var selected = null;
 function addEvents() {
     var controls = $('#' + conf.graphControls);
     var find = $('i');
-    controls.find(find).each(function(i) {
+    $('#' + conf.graphControls).find($('i')).each(function(i) {
         if(i === 0) {
             this.addEventListener('click', function(){
                 prevTime(this);
@@ -49,7 +49,7 @@ function addEvents() {
             }, false);
         }
     });
-    find = $('li');
+    var find = $('li');
     controls.find(find).each(function(i) {
         if(i === 0) {
             this.addEventListener('click', function(){
@@ -57,6 +57,7 @@ function addEvents() {
             }, false);
             this.classList.add('selected');
             selected = this;
+            console.log('here');
         }
         if(i === 1) {
             this.addEventListener('click', function(){
@@ -122,7 +123,7 @@ function getDataGraph(jorney, time) {
 function makeGraph(jorney, time) {
     jorney = jorney || currentJorney;
     time = time || currentTime;
-    fun = addPoints || function(a,b){};
+    fun = function(a,b){};
     var parseTime = d3.timeParse("%d/%m/%Y %H:%M:%S");
     var parseObject = function(con) {
         return function(obj) {
