@@ -1,0 +1,1 @@
+ogr2ogr -f GeoJSON -t_srs EPSG:4326 CU.json ../Map/MapaBAse.shp
