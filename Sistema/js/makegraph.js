@@ -57,7 +57,6 @@ function addEvents() {
             }, false);
             this.classList.add('selected');
             selected = this;
-            console.log('here');
         }
         if(i === 1) {
             this.addEventListener('click', function(){
@@ -123,7 +122,7 @@ function getDataGraph(jorney, time) {
 function makeGraph(jorney, time) {
     jorney = jorney || currentJorney;
     time = time || currentTime;
-    fun = function(a,b){};
+    fun = moveToPosition();
     var parseTime = d3.timeParse("%d/%m/%Y %H:%M:%S");
     var parseObject = function(con) {
         return function(obj) {

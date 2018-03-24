@@ -112,6 +112,32 @@ function mouseoverDep(){
 	console.log("mouseoverDep");
 }
 
+//intento para mover un punto en el mapa :)
+//si se pudo era facil
+//logro su objetivo, pero hay que optimizar
+function moveToPosition() {
+    return function(obj1, obj2) {
+        svg.selectAll('circle').remove();
+        var i = 0;
+        var j = 0;
+        svg.selectAll("circle").data([obj1, obj2])
+                        .enter().append('circle')
+                        .attr('cx', function(d){ return projection([d.lon,d.lat])[0];})
+                        .attr('cy', function(d){ return projection([d.lon,d.lat])[1];})
+                        .attr('r', function() {
+                                var r = j === 0 ? 5 : 10;
+                                j++;
+                                return r;})
+                        .attr('class', function() {
+                                var re = i === 0 ? 'point-graph' : 'point-second-graph';
+                                i++;
+                                return re;});
+    }
+}
+       
+        
+
+
 $(window).resize(function(){
 	var width = window.innerWidth - 2*margin;
 	var height= window.innerHeight - 2*margin;
