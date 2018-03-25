@@ -4,7 +4,7 @@
  * se crea un objeto conf para evitar
  * usar variables repetidas
  */
-var conf = {} 
+var conf = {}; 
 conf.width = 600;
 conf.height = 400;
 conf.margin = {top: 50, right: 70, bottom: 50, left: 70};//pixels
@@ -12,7 +12,6 @@ conf.statWidth = 200;
 conf.statHeight = 200;
 
 //informacion del sistema
-
 conf.jorney = ['caminando', 'bicicleta', 'pumabus']
 //la ruta de los archivos
 conf.path = 'Datos/';
@@ -30,9 +29,7 @@ var currentTime = 1;
 var disable = null;
 var selected = null;
 
-
 //eventFun funcion principal
-
 function addEvents() {
     var controls = $('#' + conf.graphControls);
     var find = $('i');
@@ -156,7 +153,6 @@ function makeGraph(jorney, time) {
     graph2.setScale('x', d3.scaleTime());
     graph2.setDomains('x', function(x){return x});
     graph2.setDomains('y', graph2.minMaxDomain);
-    
     
     //stats
     var dateFun = function(d){ return d.getDate().toString() +

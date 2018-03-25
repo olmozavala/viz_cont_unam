@@ -26,8 +26,6 @@ var dataGeo = {};
 //	d3.json('Datos/MapsGeoJson/Edificios.json', function(data) {
 	d3.json('Datos/MapsGeoJson/CU.json', function(data) {
 		var features = data.features;
-		//		console.log(features[0]);
-		
 		// Iterates over the data and draws something
 		var baseLayersGrp = svg.append('g').attr('class', 'boundary');
 		
@@ -40,30 +38,15 @@ var dataGeo = {};
 })();
 
 
+/* This function is used to read all the files */
 function readFile(fileName, dataId){
 	d3.csv(fileName, function(data) {
-		
 		dataGeo[dataId] = data;
-		/*
-		dataGeo[attr] = {};
-		dataGeo.bicOne.type = "FeatureCollection";
-		dataGeo.crs = {properties: {name:"urn:ogc:def:crs:OGC:1.3:CRS84"}};
-		dataFeatures = data.map( obj => {
-							var res = {}; 
-							res.type = "Feature";
-							res.properties = {date:obj.date};
-							res.geometry = {type:"Point",
-											coordinates:[obj.lon, obj.lat]};
-							return res;
-						});
-		dataGeo.features = dataFeatures;*/
-		
-		// Iterates over the data and draws something
 	});
 }
 
+/* This function draws the selected route */
 function drawRoute(dataId){
-	
 	svg.selectAll('circle').remove();
 	var baseLayersGrp = svg.append('g').attr('class', 'bici');
 	
@@ -79,23 +62,37 @@ function drawRoute(dataId){
  * @returns {undefined}
  */
 function readData(){
-	readFile('Datos/CO/1_bicicleta.csv', 'bici1');
-	readFile('Datos/CO/2_bicicleta.csv', 'bici2');
-	readFile('Datos/CO/3_bicicleta.csv', 'bici3');
+	readFile('Datos/CO/1_bicicleta.csv', 'cobici1');
+	readFile('Datos/CO/2_bicicleta.csv', 'cobici2');
+	readFile('Datos/CO/3_bicicleta.csv', 'cobici3');
 	
-	readFile('Datos/CO/1_caminando.csv', 'cam1');
-	readFile('Datos/CO/2_caminando.csv', 'cam2');
-	readFile('Datos/CO/3_caminando.csv', 'cam3');
+	readFile('Datos/CO/1_caminando.csv', 'cocam1');
+	readFile('Datos/CO/2_caminando.csv', 'cocam2');
+	readFile('Datos/CO/3_caminando.csv', 'cocam3');
 	
-	readFile('Datos/CO/1_pumabus.csv', 'bus1');
-	readFile('Datos/CO/2_pumabus.csv', 'bus2');
-	readFile('Datos/CO/3_pumabus.csv', 'bus3');
+	readFile('Datos/CO/1_pumabus.csv', 'cobus1');
+	readFile('Datos/CO/2_pumabus.csv', 'cobus2');
+	readFile('Datos/CO/3_pumabus.csv', 'cobus3');
+
+	readFile('Datos/PM25/1_bicicleta.csv', 'pmbici1');
+	readFile('Datos/PM25/2_bicicleta.csv', 'pmbici2');
+	readFile('Datos/PM25/3_bicicleta.csv', 'pmbici3');
+	
+	readFile('Datos/PM25/1_caminando.csv', 'pmcam1');
+	readFile('Datos/PM25/2_caminando.csv', 'pmcam2');
+	readFile('Datos/PM25/3_caminando.csv', 'pmcam3');
+	
+	readFile('Datos/PM25/1_pumabus.csv', 'pmbus1');
+	readFile('Datos/PM25/2_pumabus.csv', 'pmbus2');
+	readFile('Datos/PM25/3_pumabus.csv', 'pmbus3');
 }
 
-//Button TODO make it nicer. 
-$("#bici1").click(function() { drawRoute('bici1'); });
-$("#bici2").click(function() { drawRoute('bici2'); });
-
+/**
+ * This function should resize the map so that it fits nicely on the screen 
+ * @param {type} width
+ * @param {type} height
+ * @returns {undefined}
+ */
 function resizeMap(width, height){
 	svg.attr("width", width)
 			.attr("height", height);
@@ -139,6 +136,7 @@ function moveToPosition() {
 
 
 $(window).resize(function(){
+	console.log("Risizing map...");
 	var width = window.innerWidth - 2*margin;
 	var height= window.innerHeight - 2*margin;
 	resizeMap(width, height);
