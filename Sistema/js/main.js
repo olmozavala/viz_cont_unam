@@ -97,11 +97,11 @@ function readData(){
 
 	promArr.push(
 		new Promise(function (resolve, reject){ 
-			d3.json('Datos/MapsGeoJson/Edificios.json', function(error, data) {
+//			d3.json('Datos/MapsGeoJson/Edificios.json', function(error, data) {
+			d3.json('Datos/MapsGeoJson/CU.json', function(error,data) {
 					if(error){
 						reject(error);
 					}else{
-					//	d3.json('Datos/MapsGeoJson/CU.json', function(data) {
 						var features = data.features;
 						// Iterates over the data and draws the base map
 						var baseLayersGrp = svg.append('g').attr('class', 'base-map');
