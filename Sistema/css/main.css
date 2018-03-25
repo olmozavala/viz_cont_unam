@@ -54,6 +54,10 @@ body{
         
 #nav i {
     font-size: 30px;
+    width: 50px;
+    height: 50px;
+    padding: 20px;
+    font-weight: bold;
 }
 
 #nav i:hover {
@@ -62,12 +66,10 @@ body{
 
 #nav i:first-child{
     float: left;
-    margin-left: 20px;
 }
 
 #nav i:last-child{
     float: right;
-    margin-right: 20px;
 }
 
 #jorney {
@@ -86,6 +88,8 @@ body{
 #jorney li {
     display: inline-block;
     width: 195px;
+    height: 50px;
+    padding: 50px 0;
 }
 
 #jorney li:hover {

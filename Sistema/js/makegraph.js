@@ -173,9 +173,12 @@ function makeGraph(jorney, time) {
     statPM.setAtt('date', null, null, false, false, dateFun);
     statPM.div.style.marginLeft = (conf.width - 2 * conf.statWidth) + 'px';
     var update = function(obj1, obj2) {
+        var interval = setInterval(function() {
+            clearInterval(interval);
+            fun(obj1, obj2);
+        }, 10);
         statCO.changeValues(obj1);
         statPM.changeValues(obj2);
-        fun(obj1, obj2);
     };
                 //
     graph.addGraph(graph2, update);
