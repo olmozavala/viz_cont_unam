@@ -7,20 +7,15 @@ class Stat {
      * Constructor de la clase
      */
     constructor(target, width, height, obj, clas, max, min, percent) {
-        this.div = document.createElement('div');
-        this.div.className = clas || 'stats';
+        this.div = document.getElementById(clas);
         this.list = document.createElement('ul');
         this.div.appendChild(this.list);
-        this.div.style.width = width + 'px';
-        this.div.style.width = height + 'px';
         this.percent = percent || false;//default percent
-        this.maxWidth = width;//default
         this.maxValue = max || 100;
         this.fac = 100 / this.maxValue;
         this.minValue = min || 0;
         this.labels = {};
         this.addLabels(obj);//set default values
-        document.getElementById(target).appendChild(this.div);
     }
 
     /*

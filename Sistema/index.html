@@ -8,38 +8,52 @@
 		<link rel="stylesheet" href="css/stat.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-bootstrap/0.5pre/assets/css/bootstrap.min.css" />
-	</head>
-		<body>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 			
+	</head>
+	<body>
 		<div  class="container-flow">
 			<div class="row">
-				<div id="map" class="col-8"></div>
-				<div id="graph-main" class="col-4">
-					<div id="graph-stats"></div>
-					<svg id="graph"></svg>
-					<div id="graph-controls">
-						<div id="nav">
-							<i class="fa fa-angle-left"></i><i class="fa fa-angle-right"></i>
+				<!--Main map-->
+				<div id="map" class="col-sm-6"></div>
+				<!--All the graphs-->
+				<div id="graph-main" class="col-sm-6">
+					<div  class="container-flow">
+						<div class="row"> 
+							<!--The statistics-->
+							<div id="graph-stats" class="col-sm-12" >
+								<div id="stats-co" class="stats-co col-sm-6" > </div> 
+								<div id="stats-pm2_5" class="stats-pm2_5 col-sm-6" > </div> 
+							</div> 
 						</div>
-						<div class="clear"></div>
-						<div id="jorney">
-							<ul>
-								<li>
-									<img src="img/walk.png" alt="caminando">
-									<span>caminando</span>
-								</li>
-								<li>
-									<img src="img/cycling.png" alt="bicicleta">
-									<span>bicicleta</span>
-								</li>
-								<li>
-									<img src="img/bus.png" alt="pumabus">
-									<span>pumabus</span>
-								</li>
-							</ul>
+						<!--The graph-->
+						<div class="row"> <svg id="graph"></svg> </div>
+						<!--The controls-->
+						<div class="row">
+							<div id="graph-controls" class="col-sm-12">
+								<div id="nav">
+									<i class="fa fa-angle-left"></i><i class="fa fa-angle-right"></i>
+								</div>
+								<div class="clear"></div>
+								<div id="jorney">
+									<ul>
+										<li>
+											<img src="img/walk.png" alt="caminando">
+											<span>caminando</span>
+										</li>
+										<li>
+											<img src="img/cycling.png" alt="bicicleta">
+											<span>bicicleta</span>
+										</li>
+										<li>
+											<img src="img/bus.png" alt="pumabus">
+											<span>pumabus</span>
+										</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -59,5 +73,6 @@
 				makeGraph();
 			});
 		</script>
-		
+			
 	</body>
+</html>

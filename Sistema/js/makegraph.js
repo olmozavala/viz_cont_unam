@@ -5,11 +5,11 @@
  * usar variables repetidas
  */
 var conf = {}; 
-conf.width = 600;
-conf.height = 400;
-conf.margin = {top: 50, right: 70, bottom: 50, left: 70};//pixels
-conf.statWidth = 200;
-conf.statHeight = 200;
+conf.width = $("#graph-main").width();
+conf.height = window.innerHeight*.4;// Always 30% of height
+conf.margin = {top: 20, right: 20, bottom: 20, left: 20};//pixels
+conf.statWidth = $("#graph-main").width();
+conf.statHeight = window.innerHeight*.4;// Always 30% of height
 
 //informacion del sistema
 conf.jorney = ['caminando', 'bicicleta', 'pumabus']
@@ -110,8 +110,10 @@ function getDataGraph(jorney, time) {
     $('#'+ conf.graph).fadeOut('fast');
     $('#'+ conf.graphStat).fadeOut('fast');
     $('#'+ conf.graph).empty();
-    $('#'+ conf.graphStat).empty();
+    $('#stats-co').empty();
+    $('#stats-pm2_5').empty();
     makeGraph(jorney, time);
+	drawRoute(conf.cont[0],currentTime,conf.jorney[currentJorney]);
 }
 
 
@@ -133,7 +135,7 @@ function makeGraph(jorney, time) {
     var data = {};
     for(var i = 0; i < conf.cont.length; i++) {
         console.log(conf.path + conf.cont[i] + '/' + time + '_' + conf.jorney[jorney] + '.csv');
-		drawRoute(conf.cont[i],time,conf.jorney[jorney]);
+		// This draws the whole route in the map
         var file =  new SFile(conf.path + conf.cont[i] + '/' + time + '_' + conf.jorney[jorney] + '.csv');
         data[conf.cont[i]] = file.getCSV(parseObject(conf.contNames[i]));
         if(data[conf.cont[i]] == null) {
@@ -168,7 +170,7 @@ function makeGraph(jorney, time) {
     var statPM = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[conf.cont[1]][0], 'stats-' + conf.contNames[1]);
     statPM.setAtt(conf.contNames[1], graph.YRange[1], graph.YRange[0], false, true);
     statPM.setAtt('date', null, null, false, false, dateFun);
-    statPM.div.style.marginLeft = (conf.width - 2 * conf.statWidth) + 'px';
+//    statPM.div.style.marginLeft = (conf.width - 2 * conf.statWidth) + 'px';
     var update = function(obj1, obj2) {
         var interval = setInterval(function() {
             clearInterval(interval);

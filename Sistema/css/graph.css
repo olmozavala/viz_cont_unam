@@ -57,12 +57,12 @@
 }
 
 .point-graph {
-    fill: red;
+    fill: #BE3C15;
     opacity: 1;
 }
 
 .point-second-graph {
-    fill: black;
+    fill: grey;
     opacity: 0.5;
 }
 
