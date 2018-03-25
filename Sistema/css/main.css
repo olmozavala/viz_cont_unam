@@ -1,4 +1,4 @@
-.boundary {
+.base-map{
 	/*fill: #202020;*/
 	fill: green;
 	stroke: #E33723;
@@ -6,7 +6,7 @@
 	stroke-width: .3px;
 }
 
-.bici {
+.route{
 	fill: red;
 }
 

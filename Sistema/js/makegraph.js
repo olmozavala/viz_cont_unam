@@ -133,6 +133,7 @@ function makeGraph(jorney, time) {
     var data = {};
     for(var i = 0; i < conf.cont.length; i++) {
         console.log(conf.path + conf.cont[i] + '/' + time + '_' + conf.jorney[jorney] + '.csv');
+		drawRoute(conf.cont[i],time,conf.jorney[jorney]);
         var file =  new SFile(conf.path + conf.cont[i] + '/' + time + '_' + conf.jorney[jorney] + '.csv');
         data[conf.cont[i]] = file.getCSV(parseObject(conf.contNames[i]));
         if(data[conf.cont[i]] == null) {
