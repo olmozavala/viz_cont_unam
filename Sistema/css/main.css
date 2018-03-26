@@ -33,6 +33,7 @@ body{
 
 #graph-main svg {
     background: rgba(255, 255, 255, 0.9);
+    border: none;
 }
 
 #stat-graph {
@@ -80,7 +81,6 @@ body{
 #jorney li {
     display: inline-block;
     width: 195px;
-    height: 50px;
     padding: 50px 0;
 }
 
@@ -118,6 +118,6 @@ body{
 }
 
 .blur {
-    -webkit-filter: blur(5px);
-    filter: blur(5px);
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
 }

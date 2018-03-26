@@ -12,7 +12,7 @@ function getMapScale(width,height){
 }
 
 (function(){
-	
+        $('#graph-main').addClass('blur');
 	var width = $("#map").width();
 	var height= window.innerHeight - 2*margin;
 	projection = d3.geo.mercator()
@@ -117,7 +117,10 @@ function readData(){
 	var allFiles = Promise.all(promArr);
 	allFiles.then((successMassage) => { 
 		console.log(successMassage);
-		drawRoute(conf.cont[0],currentTime,conf.jorney[currentJorney]);
+                drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
+                addEvents();
+                parseData();
+                getDataGraph();
 	});
 
 }
@@ -130,10 +133,9 @@ function mouseoverDep(){
 //intento para mover un punto en el mapa :)
 //si se pudo era facil
 //logro su objetivo, pero hay que optimizar
-function moveToPosition() {
-    return function(obj1, obj2) {
+function moveToPosition(obj1, obj2) {
         svg.selectAll('#selected-point').remove();
-		var baseLayersGrp = svg.append('g').attr('id', 'selected-point');
+        var baseLayersGrp = svg.append('g').attr('id', 'selected-point');
         var i = 0;
         var j = 0;
         baseLayersGrp.selectAll("circle").data([obj1, obj2])
@@ -148,15 +150,14 @@ function moveToPosition() {
                                 var re = i === 0 ? 'point-graph' : 'point-second-graph';
                                 i++;
                                 return re;});
-    }
 }
        
 $(window).resize(function(){
-
 	var width = $("#map").width();
 	var height= window.innerHeight - 2*margin;
 	console.log("Risizing map...");
 	resizeMap(width, height);
+        resizeGraph();
 })
 
 /**

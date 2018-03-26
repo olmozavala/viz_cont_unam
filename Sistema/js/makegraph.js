@@ -1,3 +1,5 @@
+//variable con la informacion
+var data = {};
 /*
  * Variables de configuracion
  * se encuentan en pixeles
@@ -11,10 +13,9 @@ conf.margin = {top: 20, right: 20, bottom: 20, left: 20};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 
+
 //informacion del sistema
-conf.jorney = ['caminando', 'bicicleta', 'pumabus']
-//la ruta de los archivos
-conf.path = 'Datos/';
+conf.journey = ['caminando', 'bicicleta', 'pumabus']
 //las variables de los contaminantes y sus nombres de los archivos
 conf.cont = ['CO', 'PM25'];
 conf.contNames = ['co', 'pm2_5'];
@@ -23,11 +24,28 @@ conf.graphMain = 'graph-main';
 conf.graphStat = 'graph-stats';
 conf.graph = 'graph';
 conf.graphControls = 'graph-controls';
+conf.journeyControl = 'jorney';
 
-var currentJorney = 0;
-var currentTime = 1;
-var disable = null;
-var selected = null;
+//para cambiar el mapa
+conf.currentJourney = 0;
+conf.currentTime = 1;
+conf.disable = null;
+conf.selected = null;
+
+
+//funciones
+conf.parseTime = d3.timeParse("%d/%m/%Y %H:%M:%S");
+conf.parseObject = function(con) {
+        return function(obj) {
+            obj[con] = Number(obj[con]);
+            obj.date = conf.parseTime(obj.date);
+            obj.lat = Number(obj.lat);
+            obj.lon = Number(obj.lon);
+            return obj;
+        };
+    };
+
+
 
 //eventFun funcion principal
 function addEvents() {
@@ -39,7 +57,7 @@ function addEvents() {
                 prevTime(this);
             }, false);
             this.classList.add('disable');
-            disable = this;
+            conf.disable = this;
         } else {
             this.addEventListener('click', function(){
                 nextTime(this);
@@ -50,107 +68,115 @@ function addEvents() {
     controls.find(find).each(function(i) {
         if(i === 0) {
             this.addEventListener('click', function(){
-                toJorney(this, 0);
+                toJourney(this, 0);
             }, false);
             this.classList.add('selected');
-            selected = this;
+            conf.selected = this;
         }
         if(i === 1) {
             this.addEventListener('click', function(){
-                toJorney(this, 1);
+                toJourney(this, 1);
             }, false);
         }
         if(i === 2) {
             this.addEventListener('click', function(){
-                toJorney(this, 2);
+                toJourney(this, 2);
             }, false);
         }
     });
 }
 
+function resizeGraph() {
+    conf.width =  $('#' + conf.graphMain).width();
+    conf.height = window.innerHeight*.4;
+    conf.statWidth = $('#' + conf.graphMain).width();
+    conf.statHeight = window.innerHeight*.4;
+    getDataGraph();
+   
+}
+
+
 function nextTime(elem) {
-    if(currentTime > 2) {
+    if(conf.currentTime > 2) {
         return;
     }
-    disable.classList.remove('disable');
-    if((currentTime + 1) > 2) {
+    $('#'+ conf.graphMain).addClass('blur');
+    conf.disable.classList.remove('disable');
+    if((conf.currentTime + 1) > 2) {
         elem.classList.add('disable');
-        disable = elem;
+        conf.disable = elem;
     }
-    currentTime = currentTime + 1;
-    getDataGraph(currentJorney, currentTime);
+    conf.currentTime = conf.currentTime + 1;
+    getDataGraph();
 }
 
 function prevTime(elem) {
-    if(currentTime < 2) {
+    if(conf.currentTime < 2) {
         return;
     }
-    disable.classList.remove('disable');
-    if((currentTime - 1) < 2) {
+    $('#'+ conf.graphMain).addClass('blur');
+    conf.disable.classList.remove('disable');
+    if((conf.currentTime - 1) < 2) {
         elem.classList.add('disable');
-        disable = elem;
+        conf.disable = elem;
     }
-    currentTime = currentTime - 1;
-    getDataGraph(currentJorney, currentTime);
+    conf.currentTime = conf.currentTime - 1;
+    getDataGraph();
     
 }
 
-function toJorney(elem, to) {
-    selected.classList.remove('selected');
+function toJourney(elem, to) {
+    $('#'+ conf.graphMain).addClass('blur');
+    conf.selected.classList.remove('selected');
     elem.classList.add('selected');
-    selected = elem;
-    currentJorney = to;
-    getDataGraph(currentJorney, currentTime);
+    conf.selected = elem;
+    conf.currentJourney = to;
+    getDataGraph();
+    var interval = setInterval(function() {
+        clearInterval(interval);
+        drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
+    }, 10);
+}
+
+function parseData() {
+    for(var time = 1; time <= 3; time++) {
+        for(var journey in conf.journey) {
+            for(var cont in conf.cont) {
+                var id = conf.cont[cont]+conf.journey[journey]+time;
+                data[id] = dataGeo[id].map(function(obj) { return conf.parseObject(conf.contNames[cont])(obj);});
+            }
+        }
+    }
 }
 
 // funcion para cambiar la grafica
-function getDataGraph(jorney, time) {
+function getDataGraph() {
     //clean
-    $('#'+ conf.graphMain)[0].classList.add('blur');
-    $('#'+ conf.graph).fadeOut('fast');
-    $('#'+ conf.graphStat).fadeOut('fast');
     $('#'+ conf.graph).empty();
     $('#stats-co').empty();
     $('#stats-pm2_5').empty();
-    makeGraph(jorney, time);
-	drawRoute(conf.cont[0],currentTime,conf.jorney[currentJorney]);
+    var interval = setInterval(function() {
+            clearInterval(interval);
+            makeGraph();
+    }, 200);
 }
 
 
 // funcion principal
-function makeGraph(jorney, time) {
-    jorney = jorney || currentJorney;
-    time = time || currentTime;
-    fun = moveToPosition();
-    var parseTime = d3.timeParse("%d/%m/%Y %H:%M:%S");
-    var parseObject = function(con) {
-        return function(obj) {
-            obj[con] = Number(obj[con]);
-            obj.date = parseTime(obj.date);
-            obj.lat = Number(obj.lat);
-            obj.lon = Number(obj.lon);
-            return obj;
-        };
-    }
-    var data = {};
-    for(var i = 0; i < conf.cont.length; i++) {
-        console.log(conf.path + conf.cont[i] + '/' + time + '_' + conf.jorney[jorney] + '.csv');
-		// This draws the whole route in the map
-        var file =  new SFile(conf.path + conf.cont[i] + '/' + time + '_' + conf.jorney[jorney] + '.csv');
-        data[conf.cont[i]] = file.getCSV(parseObject(conf.contNames[i]));
-        if(data[conf.cont[i]] == null) {
-            console.log('error data');
-            return;
-        }
-    }
-    var graph = new Graph(conf.graph, data[conf.cont[0]], conf.width, conf.height, conf.margin.top, conf.margin.right, conf.margin.bottom, conf.margin.left, 'red-line');
+function makeGraph() {
+    
+    var id1 = conf.cont[0]+conf.journey[conf.currentJourney]+conf.currentTime;
+    var id2 = conf.cont[1]+conf.journey[conf.currentJourney]+conf.currentTime;
+    
+    
+    var graph = new Graph(conf.graph, data[id1], conf.width, conf.height, conf.margin.top, conf.margin.right, conf.margin.bottom, conf.margin.left, 'red-line');
     graph.interpolation = d3.curveBasis;
     graph.setRange('x', 'date', function(data, key){ return data[0][key];}, function(data, key){ return data[data.length - 1][key];});
     graph.setRange('y', 'co');
     graph.setScale('x', d3.scaleTime());
     graph.setDomains('x', function(x){return x});
     graph.setDomains('y', graph.minMaxDomain);
-    var graph2 = new Graph('dummy', data[conf.cont[1]], conf.width, conf.height, conf.margin.top, conf.margin.right, conf.margin.bottom, conf.margin.left, 'gray-line');
+    var graph2 = new Graph('dummy', data[id2], conf.width, conf.height, conf.margin.top, conf.margin.right, conf.margin.bottom, conf.margin.left, 'gray-line');
     graph2.interpolation = d3.curveBasis;
     graph2.setRange('y', 'pm2_5');
     graph2.setScale('x', d3.scaleTime());
@@ -164,17 +190,17 @@ function makeGraph(jorney, time) {
         ' ' + (d.getHours() < 10 ? '0' + d.getHours() : d.getHours()) + 
         ':' + (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
         ':' + d.getSeconds();};
-    var statCO = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[conf.cont[0]][0], 'stats-' + conf.contNames[0]);
+    var statCO = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[id1][0], 'stats-' + conf.contNames[0]);
     statCO.setAtt(conf.contNames[0], graph.YRange[1], graph.YRange[0], false, true);
     statCO.setAtt('date', null, null, false, false, dateFun);
-    var statPM = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[conf.cont[1]][0], 'stats-' + conf.contNames[1]);
+    var statPM = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[id2][0], 'stats-' + conf.contNames[1]);
     statPM.setAtt(conf.contNames[1], graph.YRange[1], graph.YRange[0], false, true);
     statPM.setAtt('date', null, null, false, false, dateFun);
 //    statPM.div.style.marginLeft = (conf.width - 2 * conf.statWidth) + 'px';
     var update = function(obj1, obj2) {
         var interval = setInterval(function() {
             clearInterval(interval);
-            fun(obj1, obj2);
+            moveToPosition(obj1, obj2);
         }, 10);
         statCO.changeValues(obj1);
         statPM.changeValues(obj2);
@@ -185,7 +211,5 @@ function makeGraph(jorney, time) {
     graph.removeYDomain();
     graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(-30,-20)']]);
     graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width) + ',-20)']]);
-    $('#'+ conf.graph).fadeIn('fast');
-    $('#'+ conf.graphStat).fadeIn('fast');
-    $('#'+ conf.graphMain)[0].classList.remove('blur');
+    $('#'+ conf.graphMain).removeClass('blur');
 }
