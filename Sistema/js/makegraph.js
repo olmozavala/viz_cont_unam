@@ -14,7 +14,7 @@ conf.height = window.innerHeight*.4;// Always 30% of height
 conf.margin = {top: 20, right: 40, bottom: 20, left: 40};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
-
+conf.maxJourneyControl = 600;
 
 //informacion del sistema
 conf.journey = ['caminando', 'bicicleta', 'pumabus']
@@ -26,7 +26,17 @@ conf.graphMain = 'graph-main';
 conf.graphStat = 'graph-stats';
 conf.graph = 'graph';
 conf.graphControls = 'graph-controls';
-conf.journeyControl = 'jorney';
+conf.journeyControl = 'journey';
+
+//
+if(conf.width < conf.maxJourneyControl) {
+    console.log("here");
+    console.log(conf.width);
+    $('#' + conf.journeyControl + ' ul').width(conf.width);
+} else {
+    console.log("not here");
+    $('#' + conf.journeyControl + ' ul').width(conf.maxJourneyControl);
+}
 
 //para cambiar el mapa
 conf.currentJourney = 0;
@@ -115,11 +125,11 @@ function resizeGraph() {
     var interval1 = setInterval(function() {
         clearInterval(interval1);
         getDataGraph();
-    }, 1000);
-   if(conf.width < 600) {
+    }, 500);
+   if(conf.width < conf.maxJourneyControl) {
        $('#' + conf.journeyControl + ' ul').width(conf.width);
    } else {
-       $('#' + conf.journeyControl + ' ul').width(600);
+       $('#' + conf.journeyControl + ' ul').width(conf.maxJourneyControl);
    }
 }
 

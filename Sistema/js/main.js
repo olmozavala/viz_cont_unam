@@ -157,6 +157,7 @@ $(window).resize(function(){
 	var height= window.innerHeight - 2*margin;
 	console.log("Risizing map...");
 	resizeMap(width, height);
+        svg.selectAll('#selected-point').remove();
         resizeGraph();
 })
 
