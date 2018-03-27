@@ -43,7 +43,6 @@ class Stat {
             item.appendChild(this.labels[key].rec);
             item.appendChild(this.labels[key].value);
             this.list.appendChild(item);
-            //this.changeValue(key, obj[key]);
         }
     }
 

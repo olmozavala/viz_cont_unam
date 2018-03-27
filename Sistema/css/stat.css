@@ -42,9 +42,11 @@
 
 .stat-rec {
     display: inline-block;
-    width: 0px;
+    width: 1px;
     height: 20px;
     margin: 0 5px;
+    -webkit-transition: all 0.5s; /* Safari */
+    transition: all 0.5s;
 }
 
 .stats-co .stat-rec {

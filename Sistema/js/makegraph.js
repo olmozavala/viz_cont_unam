@@ -1,5 +1,7 @@
 //variable con la informacion
 var data = {};
+var statCO = null;
+var statPM = null;
 /*
  * Variables de configuracion
  * se encuentan en pixeles
@@ -9,7 +11,7 @@ var data = {};
 var conf = {}; 
 conf.width = $("#graph-main").width();
 conf.height = window.innerHeight*.4;// Always 30% of height
-conf.margin = {top: 20, right: 20, bottom: 20, left: 20};//pixels
+conf.margin = {top: 20, right: 30, bottom: 20, left: 30};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 
@@ -45,7 +47,22 @@ conf.parseObject = function(con) {
         };
     };
 
+conf.updateStat = function(obj1, obj2) {
+        var interval = setInterval(function() {
+            clearInterval(interval);
+            moveToPosition(obj1, obj2);
+        }, 10);
+        statCO.changeValues(obj1);
+        statPM.changeValues(obj2);
+    };
 
+conf.statDateFun = function(d){ return d.getDate().toString() +
+        '/' + (d.getMonth() + 1) + 
+        '/' + d.getFullYear() +
+        ' ' + (d.getHours() < 10 ? '0' + d.getHours() : d.getHours()) + 
+        ':' + (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
+        ':' + d.getSeconds();
+    };
 
 //eventFun funcion principal
 function addEvents() {
@@ -91,7 +108,14 @@ function resizeGraph() {
     conf.height = window.innerHeight*.4;
     conf.statWidth = $('#' + conf.graphMain).width();
     conf.statHeight = window.innerHeight*.4;
-    getDataGraph();
+    var interval = setInterval(function() {
+        clearInterval(interval);
+        drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
+    }, 10);
+    var interval1 = setInterval(function() {
+        clearInterval(interval1);
+        getDataGraph();
+    }, 1000);
    
 }
 
@@ -153,14 +177,24 @@ function parseData() {
 function getDataGraph() {
     //clean
     $('#'+ conf.graph).empty();
-    $('#stats-co').empty();
-    $('#stats-pm2_5').empty();
     var interval = setInterval(function() {
             clearInterval(interval);
             makeGraph();
     }, 200);
 }
 
+function makeStats(graph) {
+    var id1 = conf.cont[0]+conf.journey[conf.currentJourney]+conf.currentTime;
+    var id2 = conf.cont[1]+conf.journey[conf.currentJourney]+conf.currentTime;
+    
+    statCO = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[id1][0], 'stats-' + conf.contNames[0]);
+    statCO.setAtt(conf.contNames[0], graph.YRange[1], graph.YRange[0], false, true);
+    statCO.setAtt('date', null, null, false, false, conf.statDateFun);
+    
+    statPM = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[id2][0], 'stats-' + conf.contNames[1]);
+    statPM.setAtt(conf.contNames[1], graph.YRange[1], graph.YRange[0], false, true);
+    statPM.setAtt('date', null, null, false, false, conf.statDateFun);
+}
 
 // funcion principal
 function makeGraph() {
@@ -183,30 +217,11 @@ function makeGraph() {
     graph2.setDomains('x', function(x){return x});
     graph2.setDomains('y', graph2.minMaxDomain);
     
-    //stats
-    var dateFun = function(d){ return d.getDate().toString() +
-        '/' + (d.getMonth() + 1) + 
-        '/' + d.getFullYear() +
-        ' ' + (d.getHours() < 10 ? '0' + d.getHours() : d.getHours()) + 
-        ':' + (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
-        ':' + d.getSeconds();};
-    var statCO = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[id1][0], 'stats-' + conf.contNames[0]);
-    statCO.setAtt(conf.contNames[0], graph.YRange[1], graph.YRange[0], false, true);
-    statCO.setAtt('date', null, null, false, false, dateFun);
-    var statPM = new Stat(conf.graphStat, conf.statWidth, conf.statHeight, data[id2][0], 'stats-' + conf.contNames[1]);
-    statPM.setAtt(conf.contNames[1], graph.YRange[1], graph.YRange[0], false, true);
-    statPM.setAtt('date', null, null, false, false, dateFun);
-//    statPM.div.style.marginLeft = (conf.width - 2 * conf.statWidth) + 'px';
-    var update = function(obj1, obj2) {
-        var interval = setInterval(function() {
-            clearInterval(interval);
-            moveToPosition(obj1, obj2);
-        }, 10);
-        statCO.changeValues(obj1);
-        statPM.changeValues(obj2);
-    };
-                //
-    graph.addGraph(graph2, update);
+    if(!statCO || !statPM) {
+        makeStats(graph)
+    }
+    
+    graph.addGraph(graph2, conf.updateStat);
     graph.addYGridLines();
     graph.removeYDomain();
     graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(-30,-20)']]);
