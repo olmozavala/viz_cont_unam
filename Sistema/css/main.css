@@ -75,7 +75,7 @@ body{
 }
 
 #jorney ul, #jorney ul {
-    width: 100%;
+    width: 600px;
     list-style: none outside none;
     list-style-type: none;
     padding: 0;
@@ -119,10 +119,12 @@ body{
 
 .selected {
     box-shadow: 2px 2px 8px #888888;
+    transform: scale(1, 1) !important;
 }
 
 .disable {
     opacity: 0.3;
+    transform: scale(1, 1) !important;
 }
 
 .blur {

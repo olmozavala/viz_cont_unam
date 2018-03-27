@@ -11,7 +11,7 @@ var statPM = null;
 var conf = {}; 
 conf.width = $("#graph-main").width();
 conf.height = window.innerHeight*.4;// Always 30% of height
-conf.margin = {top: 20, right: 30, bottom: 20, left: 30};//pixels
+conf.margin = {top: 20, right: 40, bottom: 20, left: 40};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 
@@ -61,7 +61,7 @@ conf.statDateFun = function(d){ return d.getDate().toString() +
         '/' + d.getFullYear() +
         ' ' + (d.getHours() < 10 ? '0' + d.getHours() : d.getHours()) + 
         ':' + (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) +
-        ':' + d.getSeconds();
+        ':' + (d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds());
     };
 
 //eventFun funcion principal
@@ -116,7 +116,11 @@ function resizeGraph() {
         clearInterval(interval1);
         getDataGraph();
     }, 1000);
-   
+   if(conf.width < 600) {
+       $('#' + conf.journeyControl + ' ul').width(conf.width);
+   } else {
+       $('#' + conf.journeyControl + ' ul').width(600);
+   }
 }
 
 
