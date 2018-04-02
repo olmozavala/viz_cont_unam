@@ -1,0 +1,64 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 1, 2018, 10:26:09 PM
+    Author     : olmozavala
+*/
+.fueracu{
+	fill: rgba(216,216,214,.1);
+	stroke: rgba(255,255,255,.1);
+	stroke-linejoin: round;
+	stroke-width: .26px;
+}
+
+.perimetro{
+	fill: rgba(233,255,186,.2);
+	stroke: rgba(233,255,186,.2);
+	stroke-linejoin: round;
+	stroke-width: .3px;
+}
+
+.espaciosabiertos{
+	fill: rgba(193.187.173,.3);
+	stroke: rgba(173,173,173,.3);
+	stroke-linejoin: round;
+	stroke-width: .26px;
+}
+
+.edificios{
+	/*fill: rgba(255,211,129,.7);*/
+	fill: rgba(222,121,27,.3);
+	stroke: rgba(173,173,173,.3);
+	stroke-linejoin: round;
+	stroke-width: .26px;
+}
+
+.deportivas{
+	fill: rgba(42,73,23,.4);
+	stroke: rgba(173,173,173,.4);
+	stroke-linejoin: round;
+	stroke-width: .26px;
+}
+
+.vialidades{
+	fill: rgba(255,255,255,0);
+	/*stroke: #FFFFFF;*/
+	stroke: #0A0A0A;
+	stroke-linejoin: round;
+	stroke-width: 1.5px;
+}
+
+.point-pos-outer{
+    fill: grey;
+    opacity: 0.5;
+}
+
+.point-pos-inner{
+    /*fill: #BE3C15;*/
+    fill: #FEFA47;
+    opacity: 1;
+
+}
