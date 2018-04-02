@@ -12,7 +12,7 @@ var conf = {};
 conf.width = $("#graph-main").width();
 conf.height = window.innerHeight*.4;// Always 30% of height
 // THIS MARGIN SHOULD CHANGE DEPENDING ON THE SIZE OF THE GRAPH
-conf.margin = {top: 100, right: 100, bottom: 100, left: 100};//pixels
+conf.margin = {top: 30, right: 40, bottom: 40, left: 40};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 conf.maxJourneyControl = 600;
@@ -29,13 +29,10 @@ conf.graph = 'graph';
 conf.graphControls = 'graph-controls';
 conf.journeyControl = 'journey';
 
-//
+
 if(conf.width < conf.maxJourneyControl) {
-    console.log("here");
-    console.log(conf.width);
     $('#' + conf.journeyControl + ' ul').width(conf.width);
 } else {
-    console.log("not here");
     $('#' + conf.journeyControl + ' ul').width(conf.maxJourneyControl);
 }
 
@@ -233,13 +230,11 @@ function makeGraph() {
     graph2.setDomains('y', graph2.minMaxDomain);
     
     if(!statCO || !statPM) {
-        makeStats(graph)
+        makeStats(graph);
     }
     
-    graph.addGraph(graph2, conf.updateStat);
+    graph.addGraph(graph2, conf.updateStat, null, null, 'PM2_5');
     graph.addYGridLines();
     graph.removeYDomain();
-    graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(0,10)']]);
-    graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width) + ',10)']]);
     $('#'+ conf.graphMain).removeClass('blur');
 }

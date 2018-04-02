@@ -111,9 +111,9 @@ class Graph {
                 var elem = obj.data[idx];
                 var X = obj.XScale(elem[obj.XKey]);
                 var y = obj.YScale(elem[obj.YKey]);
-                obj.focus[pos].attr('transform', 'translate(' + x + ',' + y + ')');
+                obj.focus[pos].attr('transform', 'translate(' + (obj.margin.left + x) + ',' + (obj.margin.top + y) + ')');
                 obj.focus[pos].select('text').text(elem[obj.YKey]);
-                obj.focus[pos].select('path').attr('transform', 'translate(0,' + (-y) + ')');
+                obj.focus[pos].select('path').attr('transform', 'translate(0,' + (-y - obj.margin.top) + ')');
             }
         }
     }
@@ -159,10 +159,10 @@ class Graph {
                 var obj2 = graph2.data[i];
                 var y1 = graph1.YScale(obj1[graph1.YKey]);
                 var y2 = graph2.YScale(obj2[graph2.YKey]);
-                graph1.focus[0].attr('transform', 'translate(' + x + ',' + y1 + ')');
+                graph1.focus[0].attr('transform', 'translate(' + (graph1.margin.left + x) + ',' + (graph1.margin.top + y1) + ')');
                 graph1.focus[0].select('text').text(obj1[graph1.YKey]);
-                graph1.focus[0].select('path').attr('transform', 'translate(0,' + (-y1) + ')');
-                graph1.focus[1].attr('transform', 'translate(' + x + ',' + y2 + ')');
+                graph1.focus[0].select('path').attr('transform', 'translate(0 ,' + (-y1 - graph1.margin.top) + ')');
+                graph1.focus[1].attr('transform', 'translate(' + (graph1.margin.left + x) + ',' + (graph1.margin.top + y2) + ')');
                 graph1.focus[1].select('text').text(obj2[graph2.YKey]);
                 fun(obj1, obj2);
             }
@@ -193,10 +193,10 @@ class Graph {
         bottom = bottom || 0;
         left = left || 0;
         this.target.attr('width', width)
-				.attr('height', height)
-				.attr('transform', 'translate(' + left + ',' + top + ')');
+					.attr('height', height);
         this.width = width - left - right;
         this.height = height - top - bottom;
+		this.margin = {top: top, right: right, bottom: bottom, left: left};
         this.XScaleRange = [0, this.width];
         this.YScaleRange = [this.height, 0];
     }
@@ -281,34 +281,28 @@ class Graph {
     /*
      * Agrega el eje X
      */
-    addXAxis(label, clas) {
+    addXAxis(clas) {
         clas = clas || 'xaxis'
         if(this.XAxis == null) {
             this.setAxis();
         }
         this.GXAxis = this.target.append('g')
             .attr('class', clas)
-            .attr('transform', 'translate(0, ' + this.height + ')')
+            .attr('transform', 'translate(' + this.margin.left + ', ' + (this.height + this.margin.top) + ')')
             .call(this.XAxis)
-
-		//TODO hardcoded text 
-		this.target.append("text")
-				.attr("x", this.width/2)
-				.attr("y", this.height+30)
-				.attr("dy", ".35em")
-				.text(label);
     }
 
     /*
      * Agrega el eje Y
      */
-    addYAxis(label, clas) {
+    addYAxis(clas) {
         clas = clas || 'yaxis';
         if(this.YAxis == null) {
             this.setAxis();
         }
         this.GYAxis = this.target.append('g')
             .attr('class', clas)
+            .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
             .call(this.YAxis);
     }
 
@@ -326,7 +320,7 @@ class Graph {
         }
         this.XGrid = this.target.append('g')
                     .attr('class', clas)
-                    .attr('transform', 'translate(0,' + obj.height + ')')
+                    .attr('transform', 'translate('+ this.margin.left + ',' + (this.height + this.margin.top) + ')')
                     .call(gridFun()
                         .tickSize(-obj.height)
                         .tickFormat(''));
@@ -346,6 +340,7 @@ class Graph {
         }
         this.YGrid = this.target.append('g')
                     .attr('class', clas)
+                    .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
                     .call(gridFun()
                         .tickSize(-obj.width)
                         .tickFormat(''));
@@ -412,6 +407,7 @@ class Graph {
         .attr('class', 'overlay')
         .attr('width', this.width)
         .attr('height', this.height)
+        .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')')
         .on('mouseover', mOver(graph, pos))
         .on('mouseout', mOut(graph, pos))
         .on('mousemove', mMove(graph, pos));
@@ -428,6 +424,7 @@ class Graph {
         .attr('class', 'overlay')
         .attr('width', this.width)
         .attr('height', this.height)
+        .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')')
         .on('mouseover', mOver(this))
         .on('mouseout', mOut(this))
         .on('mousemove', mMove(this, graph, fun));
@@ -457,13 +454,11 @@ class Graph {
      * Draws the X and Y axes for the graph.
 	 * You can send the labes, if you don't it uses from the properties
      */
-    preGraph(XLabel, YLabel) {
-        XLabel = XLabel || this.XKey;
-        YLabel = YLabel || this.YKey;
+    preGraph() {
         // se agrega el eje x
-        this.addXAxis(XLabel);
+        this.addXAxis();
         // se agrega el eje y
-        this.addYAxis(YLabel);
+        this.addYAxis();
         //se agrega la linea
          this.setPath();
     }
@@ -475,7 +470,10 @@ class Graph {
         this.mainPath = this.target.append('path')
             .data([this.data])
             .attr('class', this.pclass)
-            .attr('d', this.path);
+            .attr('d', this.path)
+            .attr('width', this.width)
+            .attr('height', this.height)
+            .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
     }
 
     /*
@@ -484,13 +482,13 @@ class Graph {
     addfocusElements() {
         this.addFocusElement('circle', [['r', 4.5], ['class', 'point-graph']]);
         this.addFocusElement('text', [['x', 12], ['dy', '.35em'], ['class', 'focus-text']]);
-        this.addFocusElement('path', [['stroke', 'black'], ['stroke-width', '1px'], ['d', 'M 0 ' + this.height + ' L 0 0']]);
+        this.addFocusElement('path', [['stroke', 'black'], ['stroke-width', '1px'], ['d', 'M 0 ' + (this.height + this.margin.top) + ' L 0 ' + this.margin.top]]);
     }
 
     /*
      * Crea la grafica
      */
-    linearGraph(XLabel, YLabel) {
+    linearGraph() {
         this.preGraph();
         this.strokeGraph();
     }
@@ -498,38 +496,27 @@ class Graph {
     /*
      * Main function to draw
      */
-    addGraph(graphPM25, fun) {
-		//IMPORANT this is the object of the co plot
-		// graphPM25 is another graph object with the pm25 plot (WEIRD STUFF)
-		this.target.append("rect")
-				.attr("width", this.width)
-				.attr("height", this.height)
-				.attr("fill","#C8F3FF");
-		 
-		// Verify there is a path alread for this graph
+    addGraph(graph, fun, labelX, labelY1, labelY2) {
         if(this.mainPath == null) {
             this.preGraph();//Adds the x and y axes
         }
-        if(graphPM25.mainPath == null) {
-            graphPM25.preGraph();
+        if(graph.mainPath == null) {
+            graph.preGraph();
         }
         this.strokeGraph(); //Draws the main graph (internal values)
-        graphPM25.mainPath = this.target.append('path')
-                .data([graphPM25.data])
-                .attr('class', graphPM25.pclass)
-                .attr('d', graphPM25.path);
-        graphPM25.GXAxis = this.GXAxis;
-		// Adds the Y axis lines foro the 
-        graphPM25.GYAxis = this.target.append('g')
+
+        this.strokeGraph();
+        graph.mainPath = this.target.append('path')
+                .data([graph.data])
+                .attr('class', graph.pclass)
+                .attr('d', graph.path)
+                .attr('width', this.width)
+                .attr('height', this.height)
+                .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+        graph.GYAxis = this.target.append('g')
                 .attr('class', 'y-second-graph')
-                .attr('transform', 'translate(' + this.width + ', 0)')
-                .call(d3.axisRight(graphPM25.YScale));
-
-        this.GYAxis = this.target.append('g')
-                .attr('class', 'y-co-graph')
-                .attr('transform', 'translate(0, 0)')
-                .call(d3.axisLeft(this.YScale));
-
+                .attr('transform', 'translate(' + (this.width + this.margin.left) + ', ' + this.margin.top + ')')
+                .call(d3.axisRight(graph.YScale));
         //focus para la primera grafica
         this.addFocus();
         this.addfocusElements();
@@ -538,7 +525,11 @@ class Graph {
         this.addFocusElement('circle', [['r', 4.5], ['class', 'point-second-graph']], 1);
         this.addFocusElement('text', [['x', 12], ['dy', '.35em'], ['class', 'focus-second-text']], 1);
         //add rect
-        this.addRecGraph(graphPM25, fun);
 
+        this.addRecGraph(graph, fun);
+        //add labels
+        this.addLabel('x', labelX || this.XKey.toUpperCase(), [['class', 'xlabel-graph'], ['transform', 'translate(' + (this.width * 0.5 + this.margin.left) + ', ' + (this.margin.top + this.height + this.margin.bottom * 0.9) + ')']]);
+        this.addLabel('y', labelY1 || this.YKey.toUpperCase(), [['class', 'ylabel-graph'], ['transform', 'translate(' + (this.margin.left * 0.5) + ', ' + (this.margin.top * 0.5) + ')']]);
+        this.addLabel('y2', labelY2, [['class', 'ylabel-second-graph'], ['transform', 'translate(' + (this.width + this.margin.left - 5) + ', ' + (this.margin.top * 0.5) + ')']]);
     }
 }
