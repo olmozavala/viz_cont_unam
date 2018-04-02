@@ -1,5 +1,4 @@
 //variable con la informacion
-var g_ = null;
 var data = {};
 var statCO = null;
 var statPM = null;
@@ -12,7 +11,7 @@ var statPM = null;
 var conf = {}; 
 conf.width = $("#graph-main").width();
 conf.height = window.innerHeight*.4;// Always 30% of height
-conf.margin = {top: 30, right: 40, bottom: 0, left: 40};//pixels
+conf.margin = {top: 30, right: 40, bottom: 40, left: 40};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 conf.maxJourneyControl = 600;
@@ -230,13 +229,11 @@ function makeGraph() {
     graph2.setDomains('y', graph2.minMaxDomain);
     
     if(!statCO || !statPM) {
-        makeStats(graph)
+        makeStats(graph);
     }
     
-    graph.addGraph(graph2, conf.updateStat);
+    graph.addGraph(graph2, conf.updateStat, null, null, 'PM2_5');
     graph.addYGridLines();
     graph.removeYDomain();
-    graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(' + (-30 + graph.margin.left) + ', ' + (-20 + graph.margin.top) + ')']]);
-    graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width + graph.margin.left) + ', ' + (-20 + graph.margin.top) + ')']]);
     $('#'+ conf.graphMain).removeClass('blur');
 }

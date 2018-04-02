@@ -178,15 +178,15 @@ class Graph {
     }
 
     /*
-     * Cambia el  tamaño
+     * Asigna el  tamaño
      */
     setSize(width, height, top, right, bottom, left) {
         top = top || 0;
         right = right || 0;
         bottom = bottom || 0;
         left = left || 0;
-        this.target.attr('width', width + left + right)
-        .attr('height', height + top + bottom)
+        this.target.attr('width', width)
+        .attr('height', height)
         this.width = width - left - right;
         this.height = height - top - bottom;
         this.margin = {top: top, right: right, bottom: bottom, left: left};
@@ -277,7 +277,7 @@ class Graph {
         }
         this.GXAxis = this.target.append('g')
             .attr('class', clas)
-            .attr('transform', 'translate(' + this.margin.left + ', ' + (this.height + this.margin.top + this.margin.bottom) + ')')
+            .attr('transform', 'translate(' + this.margin.left + ', ' + (this.height + this.margin.top) + ')')
             .call(this.XAxis)
     }
 
@@ -291,7 +291,7 @@ class Graph {
         }
         this.GYAxis = this.target.append('g')
             .attr('class', clas)
-            .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top + this.margin.bottom) + ')')
+            .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
             .call(this.YAxis);
     }
 
@@ -309,7 +309,7 @@ class Graph {
         }
         this.XGrid = this.target.append('g')
                     .attr('class', clas)
-                    .attr('transform', 'translate('+ this.margin.left + ',' + (this.height + this.margin.top + this.margin.bottom) + ')')
+                    .attr('transform', 'translate('+ this.margin.left + ',' + (this.height + this.margin.top) + ')')
                     .call(gridFun()
                         .tickSize(-obj.height)
                         .tickFormat(''));
@@ -329,7 +329,7 @@ class Graph {
         }
         this.YGrid = this.target.append('g')
                     .attr('class', clas)
-                    .attr('transform', 'translate(' + this.margin.left + ',' + (this.margin.top + this.margin.bottom) + ')')
+                    .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
                     .call(gridFun()
                         .tickSize(-obj.width)
                         .tickFormat(''));
@@ -459,6 +459,8 @@ class Graph {
             .data([this.data])
             .attr('class', this.pclass)
             .attr('d', this.path)
+            .attr('width', this.width)
+            .attr('height', this.height)
             .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
     }
 
@@ -468,7 +470,7 @@ class Graph {
     addfocusElements() {
         this.addFocusElement('circle', [['r', 4.5], ['class', 'point-graph']]);
         this.addFocusElement('text', [['x', 12], ['dy', '.35em'], ['class', 'focus-text']]);
-        this.addFocusElement('path', [['stroke', 'black'], ['stroke-width', '1px'], ['d', 'M 0 ' + (this.height + this.margin.top + this.margin.bottom) + ' L 0 0']]);
+        this.addFocusElement('path', [['stroke', 'black'], ['stroke-width', '1px'], ['d', 'M 0 ' + (this.height + this.margin.top) + ' L 0 ' + this.margin.top]]);
     }
 
     /*
@@ -482,7 +484,7 @@ class Graph {
     /*
      * Agrega otra grafica
      */
-    addGraph(graph, fun) {
+    addGraph(graph, fun, labelX, labelY1, labelY2) {
         if(this.mainPath == null) {
             this.preGraph();
         }
@@ -494,10 +496,12 @@ class Graph {
                 .data([graph.data])
                 .attr('class', graph.pclass)
                 .attr('d', graph.path)
+                .attr('width', this.width)
+                .attr('height', this.height)
                 .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
         graph.GYAxis = this.target.append('g')
                 .attr('class', 'y-second-graph')
-                .attr('transform', 'translate(' + (this.width + this.margin.left) + ', ' + (this.margin.top + this.margin.bottom) + ')')
+                .attr('transform', 'translate(' + (this.width + this.margin.left) + ', ' + this.margin.top + ')')
                 .call(d3.axisRight(graph.YScale));
         //focus para la primera grafica
         this.addFocus();
@@ -508,5 +512,9 @@ class Graph {
         this.addFocusElement('text', [['x', 12], ['dy', '.35em'], ['class', 'focus-second-text']], 1);
         //add rect
         this.addRecGraph(graph, fun);
+        //add labels
+        this.addLabel('x', labelX || this.XKey.toUpperCase(), [['class', 'xlabel-graph'], ['transform', 'translate(' + (this.width * 0.5 + this.margin.left) + ', ' + (this.margin.top + this.height + this.margin.bottom * 0.9) + ')']]);
+        this.addLabel('y', labelY1 || this.YKey.toUpperCase(), [['class', 'ylabel-graph'], ['transform', 'translate(' + (this.margin.left * 0.5) + ', ' + (this.margin.top * 0.5) + ')']]);
+        this.addLabel('y2', labelY2, [['class', 'ylabel-second-graph'], ['transform', 'translate(' + (this.width + this.margin.left - 5) + ', ' + (this.margin.top * 0.5) + ')']]);
     }
 }
