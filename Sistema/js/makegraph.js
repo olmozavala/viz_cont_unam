@@ -1,4 +1,5 @@
 //variable con la informacion
+var g_ = null;
 var data = {};
 var statCO = null;
 var statPM = null;
@@ -11,7 +12,7 @@ var statPM = null;
 var conf = {}; 
 conf.width = $("#graph-main").width();
 conf.height = window.innerHeight*.4;// Always 30% of height
-conf.margin = {top: 50, right: 40, bottom: 20, left: 40};//pixels
+conf.margin = {top: 30, right: 40, bottom: 0, left: 40};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 conf.maxJourneyControl = 600;
@@ -28,13 +29,10 @@ conf.graph = 'graph';
 conf.graphControls = 'graph-controls';
 conf.journeyControl = 'journey';
 
-//
+
 if(conf.width < conf.maxJourneyControl) {
-    console.log("here");
-    console.log(conf.width);
     $('#' + conf.journeyControl + ' ul').width(conf.width);
 } else {
-    console.log("not here");
     $('#' + conf.journeyControl + ' ul').width(conf.maxJourneyControl);
 }
 
@@ -46,11 +44,11 @@ conf.selected = null;
 
 
 //funciones
-conf.parseTime = d3.timeParse("%d/%m/%Y %H:%M:%S");
+conf.parseTime = d3.time.format("%d/%m/%Y %H:%M:%S");
 conf.parseObject = function(con) {
         return function(obj) {
             obj[con] = Number(obj[con]);
-            obj.date = conf.parseTime(obj.date);
+            obj.date = conf.parseTime.parse(obj.date);
             obj.lat = Number(obj.lat);
             obj.lon = Number(obj.lon);
             return obj;
@@ -238,7 +236,7 @@ function makeGraph() {
     graph.addGraph(graph2, conf.updateStat);
     graph.addYGridLines();
     graph.removeYDomain();
-    graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(-30,-20)']]);
-    graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width) + ',-20)']]);
+    graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(' + (-30 + graph.margin.left) + ', ' + (-20 + graph.margin.top) + ')']]);
+    graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width + graph.margin.left) + ', ' + (-20 + graph.margin.top) + ')']]);
     $('#'+ conf.graphMain).removeClass('blur');
 }
