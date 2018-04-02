@@ -11,7 +11,8 @@ var statPM = null;
 var conf = {}; 
 conf.width = $("#graph-main").width();
 conf.height = window.innerHeight*.4;// Always 30% of height
-conf.margin = {top: 50, right: 40, bottom: 20, left: 40};//pixels
+// THIS MARGIN SHOULD CHANGE DEPENDING ON THE SIZE OF THE GRAPH
+conf.margin = {top: 100, right: 100, bottom: 100, left: 100};//pixels
 conf.statWidth = $("#graph-main").width();
 conf.statHeight = window.innerHeight*.4;// Always 30% of height
 conf.maxJourneyControl = 600;
@@ -138,7 +139,7 @@ function nextTime(elem) {
     if(conf.currentTime > 2) {
         return;
     }
-    $('#'+ conf.graphMain).addClass('blur');
+//    $('#'+ conf.graphMain).addClass('blur');
     conf.disable.classList.remove('disable');
     if((conf.currentTime + 1) > 2) {
         elem.classList.add('disable');
@@ -152,7 +153,7 @@ function prevTime(elem) {
     if(conf.currentTime < 2) {
         return;
     }
-    $('#'+ conf.graphMain).addClass('blur');
+//    $('#'+ conf.graphMain).addClass('blur');
     conf.disable.classList.remove('disable');
     if((conf.currentTime - 1) < 2) {
         elem.classList.add('disable');
@@ -164,7 +165,7 @@ function prevTime(elem) {
 }
 
 function toJourney(elem, to) {
-    $('#'+ conf.graphMain).addClass('blur');
+//    $('#'+ conf.graphMain).addClass('blur');
     conf.selected.classList.remove('selected');
     elem.classList.add('selected');
     conf.selected = elem;
@@ -226,7 +227,7 @@ function makeGraph() {
     graph.setDomains('y', graph.minMaxDomain);
     var graph2 = new Graph('dummy', data[id2], conf.width, conf.height, conf.margin.top, conf.margin.right, conf.margin.bottom, conf.margin.left, 'gray-line');
     graph2.interpolation = d3.curveBasis;
-    graph2.setRange('y', 'pm2_5');
+    graph2.setRange('y', 'pm2_5'); // Sets the values for pm25 graph
     graph2.setScale('x', d3.scaleTime());
     graph2.setDomains('x', function(x){return x});
     graph2.setDomains('y', graph2.minMaxDomain);
@@ -238,7 +239,7 @@ function makeGraph() {
     graph.addGraph(graph2, conf.updateStat);
     graph.addYGridLines();
     graph.removeYDomain();
-    graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(-30,-20)']]);
-    graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width) + ',-20)']]);
+    graph.addLabel('y', 'CO', [['class', 'label-graph'], ['transform', 'translate(0,10)']]);
+    graph.addLabel('y2', 'PM25', [['class', 'label-second-graph'], ['transform', 'translate(' + (graph.width) + ',10)']]);
     $('#'+ conf.graphMain).removeClass('blur');
 }

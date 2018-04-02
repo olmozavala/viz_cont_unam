@@ -14,10 +14,19 @@ class Graph {
         this.data = data;
         this.dataScale = data.length / width;
         this.pclass = 'line ' + pclass;
-        this.XKey = null;
-        this.YKey = null;
-        this.XRange = null;
-        this.YRange = null;
+		// These spaces are used to center the graph and give space
+		// to the 'axes' and titles
+		this.spaces= {top: 0, right: 0, bottom: 0, left: 100};
+        this.XKey = null; 
+        this.YKey = null; // 
+        this.XRange = null; // Array with start and end dates (range)
+        this.YRange = null; // Array with start and end values (range)
+        this.XScaleRange;
+        this.YScaleRange;
+		this.XScale; // Scale obtained from this.scale (d4.scaleLinear)
+		this.YScale; // Scale obtained from this.scale (d4.scaleLinear) 
+		this.domain; // Function to retrieve a domain created at defaultDomainFun
+		this.scale; // D3 linear scale d3.scaleLinear() range -> values domain -> idxs
         this.XAxis = null;
         this.YAxis = null;
         this.rect = null;
@@ -89,8 +98,6 @@ class Graph {
         this.interpolation = d3.curveLinear;
     }
 
-
-            
     /*
      * default functions
      */
@@ -111,7 +118,6 @@ class Graph {
         }
     }
 
-
     /*
      * custom 2 graphs functions
      */
@@ -128,7 +134,6 @@ class Graph {
     /*
      * custom 2 graphs functions
      */
-
      twoMouseOutFun() {
          return function(obj) {
             return function() {
@@ -164,7 +169,6 @@ class Graph {
          }
      }
 
-    
     /*
      * cambia la informacion
      */
@@ -180,7 +184,8 @@ class Graph {
     }
 
     /*
-     * Cambia el  tamaño
+	 * Sets the size of the SVG element and the size
+	 * of the graph.
      */
     setSize(width, height, top, right, bottom, left) {
         top = top || 0;
@@ -188,18 +193,22 @@ class Graph {
         bottom = bottom || 0;
         left = left || 0;
         this.target.attr('width', width)
-        .attr('height', height)
-        .attr('transform', 'translate(' + left + ',' + top + ')');
+				.attr('height', height)
+				.attr('transform', 'translate(' + left + ',' + top + ')');
         this.width = width - left - right;
         this.height = height - top - bottom;
-        this.margin = {top: top, right: right, bottom: bottom, left: left};
         this.XScaleRange = [0, this.width];
         this.YScaleRange = [this.height, 0];
     }
 
-    /*
-     * cambia el rango del eje x
-     */
+	/**
+	 * Changes the values for the X values.  
+	 * @param {type} axis Which axis are we modifying 'x' or 'y'
+	 * @param {type} key  Key for the values, in this case 'pm2_5' or 'co'
+	 * @param {type} funMin
+	 * @param {type} funMax
+	 * @returns {undefined}
+	 */
     setRange(axis, key, funMin, funMax) {
         axis = axis || 'x';//default put a x range
         var i = axis === 'x' ? 0 : 1;
@@ -230,7 +239,6 @@ class Graph {
         this[axis.toUpperCase() + 'Scale'] = scale.range(range);
     }
 
-    
     /*
      * asigna los dominios
      */
@@ -282,6 +290,13 @@ class Graph {
             .attr('class', clas)
             .attr('transform', 'translate(0, ' + this.height + ')')
             .call(this.XAxis)
+
+		//TODO hardcoded text 
+		this.target.append("text")
+				.attr("x", this.width/2)
+				.attr("y", this.height+30)
+				.attr("dy", ".35em")
+				.text(label);
     }
 
     /*
@@ -439,7 +454,8 @@ class Graph {
     }
 
     /*
-     * prepare a graph
+     * Draws the X and Y axes for the graph.
+	 * You can send the labes, if you don't it uses from the properties
      */
     preGraph(XLabel, YLabel) {
         XLabel = XLabel || this.XKey;
@@ -480,25 +496,40 @@ class Graph {
     }
 
     /*
-     * Agrega otra grafica
+     * Main function to draw
      */
-    addGraph(graph, fun) {
+    addGraph(graphPM25, fun) {
+		//IMPORANT this is the object of the co plot
+		// graphPM25 is another graph object with the pm25 plot (WEIRD STUFF)
+		this.target.append("rect")
+				.attr("width", this.width)
+				.attr("height", this.height)
+				.attr("fill","#C8F3FF");
+		 
+		// Verify there is a path alread for this graph
         if(this.mainPath == null) {
-            this.preGraph();
+            this.preGraph();//Adds the x and y axes
         }
-        if(graph.mainPath == null) {
-            graph.preGraph();
+        if(graphPM25.mainPath == null) {
+            graphPM25.preGraph();
         }
-        this.strokeGraph();
-        graph.mainPath = this.target.append('path')
-                .data([graph.data])
-                .attr('class', graph.pclass)
-                .attr('d', graph.path);
-        graph.GXAxis = this.GXAxis;
-        graph.GYAxis = this.target.append('g')
+        this.strokeGraph(); //Draws the main graph (internal values)
+        graphPM25.mainPath = this.target.append('path')
+                .data([graphPM25.data])
+                .attr('class', graphPM25.pclass)
+                .attr('d', graphPM25.path);
+        graphPM25.GXAxis = this.GXAxis;
+		// Adds the Y axis lines foro the 
+        graphPM25.GYAxis = this.target.append('g')
                 .attr('class', 'y-second-graph')
                 .attr('transform', 'translate(' + this.width + ', 0)')
-                .call(d3.axisRight(graph.YScale));
+                .call(d3.axisRight(graphPM25.YScale));
+
+        this.GYAxis = this.target.append('g')
+                .attr('class', 'y-co-graph')
+                .attr('transform', 'translate(0, 0)')
+                .call(d3.axisLeft(this.YScale));
+
         //focus para la primera grafica
         this.addFocus();
         this.addfocusElements();
@@ -507,6 +538,7 @@ class Graph {
         this.addFocusElement('circle', [['r', 4.5], ['class', 'point-second-graph']], 1);
         this.addFocusElement('text', [['x', 12], ['dy', '.35em'], ['class', 'focus-second-text']], 1);
         //add rect
-        this.addRecGraph(graph, fun);
+        this.addRecGraph(graphPM25, fun);
+
     }
 }

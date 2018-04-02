@@ -12,16 +12,16 @@ function getMapScale(width,height){
 }
 
 (function(){
-        $('#graph-main').addClass('blur');
+//        $('#graph-main').addClass('blur');
 	var width = $("#map").width();
 	var height= window.innerHeight - 2*margin;
-	projection = d3.geo.mercator()
+	projection = d3.geoMercator()
 			.scale(getMapScale(width,height))
 	// Center the Map in Mexico City
 			.center(center)
 			.translate([width / 2, height / 2]);
 	
-	path = d3.geo.path().projection(projection);
+	path = d3.geoPath().projection(projection);
 	
 	svg = d3.select("#map")
 			.append("svg")
@@ -95,23 +95,14 @@ function readData(){
 	promArr.push(readFile('Datos/PM25/2_pumabus.csv', 'PM25pumabus2'));
 	promArr.push(readFile('Datos/PM25/3_pumabus.csv', 'PM25pumabus3'));
 
-	promArr.push(
-		new Promise(function (resolve, reject){ 
-//			d3.json('Datos/MapsGeoJson/Edificios.json', function(error, data) {
-			d3.json('Datos/MapsGeoJson/CU.json', function(error,data) {
-					if(error){
-						reject(error);
-					}else{
-						var features = data.features;
-						// Iterates over the data and draws the base map
-						var baseLayersGrp = svg.append('g').attr('class', 'base-map');
-						baseLayersGrp.selectAll('path').data(features)
-								.enter().append('path')
-								.attr('d', path);
-						resolve('Success for Base map');
-					}
-				});
-			})  );
+	//fueracu, perimetro, espaciosabiertos, edificios, deportivas, vialidades
+	var mapsPath = 'Datos/MapsGeoJson/';
+	promArr.push( addMap(mapsPath+'fueracu.json', 'fueracu'));
+	promArr.push( addMap(mapsPath+'perimetro.json', 'perimetro'));
+	promArr.push( addMap(mapsPath+'espaciosabiertos.json', 'espaciosabiertos'));
+	promArr.push( addMap(mapsPath+'edificios.json', 'edificios'));
+	promArr.push( addMap(mapsPath+'deportivas.json', 'deportivas'));
+	promArr.push( addMap(mapsPath+'vialidades.json', 'vialidades'));
 
 	// Once all the promises have been completed, then we draw the map
 	var allFiles = Promise.all(promArr);
@@ -123,6 +114,33 @@ function readData(){
                 getDataGraph();
 	});
 
+}
+
+/**
+ * 
+ * @param {type} fileName
+ * @param {type} style
+ * @returns {Promise}
+ */
+function addMap(fileName, style){
+	return new Promise(function (resolve, reject){ 
+			d3.json(fileName, function(error, data) {
+					if(error){
+						reject(error);
+					}else{
+						var features = data.features;
+						// Iterates over the data and draws the base map
+						var baseLayersGrp = svg.append('g').attr('class', style);
+						baseLayersGrp.selectAll('path').data(features)
+								.enter().append('path')
+								.attr('d', path)
+								.on('mouseover',function displayText(features){
+									console.log('sopa')
+								});
+						resolve('Success for map: '+ style);
+					}
+				});
+			})  ;
 }
 
 
@@ -147,7 +165,7 @@ function moveToPosition(obj1, obj2) {
                                 j++;
                                 return r;})
                         .attr('class', function() {
-                                var re = i === 0 ? 'point-graph' : 'point-second-graph';
+                                var re = i === 0 ? 'point-pos-inner' : 'point-pos-outer';
                                 i++;
                                 return re;});
 }

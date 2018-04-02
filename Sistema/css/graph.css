@@ -49,6 +49,13 @@
     opacity: 0.3;
 }
 
+.y-co-graph{
+    fill: red;
+    opacity: 0.8;
+    font-weight: bold;
+    font-size: 13px;
+}
+
 .y-second-graph, .label-second-graph {
     fill: gray;
     opacity: 0.8;

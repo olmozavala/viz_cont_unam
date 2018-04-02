@@ -1,11 +1,3 @@
-.base-map{
-	/*fill: #202020;*/
-	fill: green;
-	stroke: #E33723;
-	stroke-linejoin: round;
-	stroke-width: .3px;
-}
-
 .route{
 	fill: red;
 }
