@@ -12,7 +12,7 @@ function getMapScale(width,height){
 }
 
 (function(){
-//        $('#graph-main').addClass('blur');
+	$('#graph-main').addClass('blur');
 	var width = $("#map").width();
 	var height= window.innerHeight - 2*margin;
 	projection = d3.geoMercator()
@@ -29,6 +29,7 @@ function getMapScale(width,height){
 			.attr("height", height)
 			.attr("id", "svgBase");
 
+	resizeLogos();
 	readData();
 })();
 
@@ -107,13 +108,12 @@ function readData(){
 	// Once all the promises have been completed, then we draw the map
 	var allFiles = Promise.all(promArr);
 	allFiles.then((successMassage) => { 
-		console.log(successMassage);
-                drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
-                addEvents();
-                parseData();
-                getDataGraph();
+			console.log(successMassage);
+			drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
+			addEvents();
+			parseData();
+			getDataGraph();
 	});
-
 }
 
 /**
@@ -135,7 +135,6 @@ function addMap(fileName, style){
 								.enter().append('path')
 								.attr('d', path)
 								.on('mouseover',function displayText(features){
-									console.log('sopa')
 								});
 						resolve('Success for map: '+ style);
 					}
@@ -175,9 +174,10 @@ $(window).resize(function(){
 	var height= window.innerHeight - 2*margin;
 	console.log("Risizing map...");
 	resizeMap(width, height);
-        svg.selectAll('#selected-point').remove();
-        resizeGraph();
-})
+	svg.selectAll('#selected-point').remove();
+	resizeGraph();
+	resizeLogos();
+});
 
 /**
  * This function should resize the map so that it fits nicely on the screen 

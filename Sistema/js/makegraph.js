@@ -10,11 +10,13 @@ var statPM = null;
  */
 var conf = {}; 
 conf.width = $("#graph-main").width();
-conf.height = window.innerHeight*.4;// Always 30% of height
+conf.heightGraphProp = .35; // Proportion of the height to use for the graph
+conf.heightStatProp = .35; // Proportion of the height to use for the statistics
+conf.height = window.innerHeight*conf.heightGraphProp;
 // THIS MARGIN SHOULD CHANGE DEPENDING ON THE SIZE OF THE GRAPH
 conf.margin = {top: 30, right: 40, bottom: 40, left: 40};//pixels
 conf.statWidth = $("#graph-main").width();
-conf.statHeight = window.innerHeight*.4;// Always 30% of height
+conf.statHeight = window.innerHeight*conf.heightStatProp;// TODO HARDCODED height fors stats
 conf.maxJourneyControl = 600;
 
 //informacion del sistema
@@ -113,9 +115,9 @@ function addEvents() {
 
 function resizeGraph() {
     conf.width =  $('#' + conf.graphMain).width();
-    conf.height = window.innerHeight*.4;
+    conf.height = window.innerHeight*conf.heightGraphProp;
     conf.statWidth = $('#' + conf.graphMain).width();
-    conf.statHeight = window.innerHeight*.4;
+	conf.statHeight = window.innerHeight*conf.heightStatProp;// TODO HARDCODED height fors stats
     var interval = setInterval(function() {
         clearInterval(interval);
         drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
@@ -136,7 +138,7 @@ function nextTime(elem) {
     if(conf.currentTime > 2) {
         return;
     }
-//    $('#'+ conf.graphMain).addClass('blur');
+    $('#'+ conf.graphMain).addClass('blur');
     conf.disable.classList.remove('disable');
     if((conf.currentTime + 1) > 2) {
         elem.classList.add('disable');
@@ -150,7 +152,7 @@ function prevTime(elem) {
     if(conf.currentTime < 2) {
         return;
     }
-//    $('#'+ conf.graphMain).addClass('blur');
+    $('#'+ conf.graphMain).addClass('blur');
     conf.disable.classList.remove('disable');
     if((conf.currentTime - 1) < 2) {
         elem.classList.add('disable');
@@ -162,7 +164,7 @@ function prevTime(elem) {
 }
 
 function toJourney(elem, to) {
-//    $('#'+ conf.graphMain).addClass('blur');
+    $('#'+ conf.graphMain).addClass('blur');
     conf.selected.classList.remove('selected');
     elem.classList.add('selected');
     conf.selected = elem;
