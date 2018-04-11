@@ -82,6 +82,14 @@ class Graph {
         this.minMaxDomain = function(range) {
             return [d3.min(range), d3.max(range)];
         }
+
+        this.minMaxDomainCO = function(range) {
+            return [0, 70];
+        }
+
+        this.minMaxDomainPM25 = function(range) {
+            return [0, 10];
+        }
     }
 
     /*
@@ -528,8 +536,8 @@ class Graph {
 
         this.addRecGraph(graph, fun);
         //add labels
-        this.addLabel('x', labelX || this.XKey.toUpperCase(), [['class', 'xlabel-graph'], ['transform', 'translate(' + (this.width * 0.5 + this.margin.left) + ', ' + (this.margin.top + this.height + this.margin.bottom * 0.9) + ')']]);
+        this.addLabel('x', labelX || this.XKey.toUpperCase(), [['class', 'xlabel-graph'], ['transform', 'translate(' + (this.width * 0.5) + ', ' + (this.margin.top + this.height + this.margin.bottom * 0.9) + ')']]);
         this.addLabel('y', labelY1 || this.YKey.toUpperCase(), [['class', 'ylabel-graph'], ['transform', 'translate(' + (this.margin.left * 0.5) + ', ' + (this.margin.top * 0.5) + ')']]);
-        this.addLabel('y2', labelY2, [['class', 'ylabel-second-graph'], ['transform', 'translate(' + (this.width + this.margin.left - 5) + ', ' + (this.margin.top * 0.5) + ')']]);
+        this.addLabel('y2', labelY2 || this.YKey.toUpperCase(), [['class', 'ylabel-second-graph'], ['transform', 'translate(' + (this.width + this.margin.left - 5) + ', ' + (this.margin.top * 0.5) + ')']]);
     }
 }
