@@ -223,19 +223,21 @@ function makeGraph() {
     graph.setRange('y', 'co');
     graph.setScale('x', d3.scaleTime());
     graph.setDomains('x', function(x){return x});
+    //graph.setDomains('y', null, [0, 10]);
     graph.setDomains('y', graph.minMaxDomainPM25);
     var graph2 = new Graph('dummy', data[id2], conf.width, conf.height, conf.margin.top, conf.margin.right, conf.margin.bottom, conf.margin.left, 'gray-line');
     graph2.interpolation = d3.curveBasis;
     graph2.setRange('y', 'pm2_5'); // Sets the values for pm25 graph
     graph2.setScale('x', d3.scaleTime());
     graph2.setDomains('x', function(x){return x});
+    //graph2.setDomains('y', null, [0, 70]);
     graph2.setDomains('y', graph2.minMaxDomainCO);
     
     if(!statCO || !statPM) {
         makeStats(graph);
     }
     
-    graph.addGraph(graph2, conf.updateStat, '7 de Febrero del 2018', null, null, 'PM2_5');
+    graph.addGraph(graph2, conf.updateStat, '7 de Febrero del 2018', null, 'PM2_5');
     graph.addYGridLines();
     graph.removeYDomain();
     $('#'+ conf.graphMain).removeClass('blur');
