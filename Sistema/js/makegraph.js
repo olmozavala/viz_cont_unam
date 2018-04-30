@@ -146,6 +146,7 @@ function nextTime(elem) {
     }
     conf.currentTime = conf.currentTime + 1;
     getDataGraph();
+	drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
 }
 
 function prevTime(elem) {
@@ -160,7 +161,7 @@ function prevTime(elem) {
     }
     conf.currentTime = conf.currentTime - 1;
     getDataGraph();
-    
+	drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
 }
 
 function toJourney(elem, to) {

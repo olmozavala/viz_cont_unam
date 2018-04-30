@@ -109,10 +109,10 @@ function readData(){
 	var allFiles = Promise.all(promArr);
 	allFiles.then((successMassage) => { 
 			console.log(successMassage);
-			drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
 			addEvents();
 			parseData();
 			getDataGraph();
+			drawRoute(conf.cont[0],conf.currentTime,conf.journey[conf.currentJourney]);
 	});
 }
 

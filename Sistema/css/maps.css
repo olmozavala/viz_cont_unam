@@ -17,6 +17,8 @@ and open the template in the editor.
 .perimetro{
 	fill: rgba(233,255,186,.2);
 	stroke: rgba(233,255,186,.2);
+	/*fill: rgba(166, 217, 106, 1);*/
+	/*stroke: rgba(166, 217,106, 1);*/
 	stroke-linejoin: round;
 	stroke-width: .3px;
 }
@@ -29,9 +31,10 @@ and open the template in the editor.
 }
 
 .edificios{
-	/*fill: rgba(255,211,129,.7);*/
 	fill: rgba(222,121,27,.3);
-	stroke: rgba(173,173,173,.3);
+	stroke: rgba(173,173,173,1);
+	/*fill: rgba(253, 174, 97,1);*/
+	/*stroke: rgba(253, 174, 97,.3);*/
 	stroke-linejoin: round;
 	stroke-width: .26px;
 }
@@ -39,6 +42,8 @@ and open the template in the editor.
 .deportivas{
 	fill: rgba(42,73,23,.4);
 	stroke: rgba(173,173,173,.4);
+	/*fill: rgba(26, 150, 65, 1);*/
+	/*stroke: rgba(106, 105, 98, 1);*/
 	stroke-linejoin: round;
 	stroke-width: .26px;
 }
